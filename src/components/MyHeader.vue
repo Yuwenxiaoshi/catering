@@ -2,14 +2,14 @@
   <div>
     <van-nav-bar title="欢迎来到餐饮" fixed>
       <template #left>
-        <router-link to="/index">
+        <a @click="goIndex">
           <img
             src="http://127.0.0.1:3030/img/logo.png"
             width="100%"
             style="margin-left: -2.5rem"
             alt=""
           />
-        </router-link>
+        </a>
       </template>
 
       <template #right v-if="username">
@@ -43,6 +43,13 @@ export default {
   methods: {
     goMe() {
       this.$router.push("/me");
+      window.sessionStorage.setItem("active", "Me");
+      location.reload();
+    },
+    goIndex() {
+      this.$router.push("/index");
+      window.sessionStorage.setItem("active", "Index");
+      location.reload();
     },
   },
 };

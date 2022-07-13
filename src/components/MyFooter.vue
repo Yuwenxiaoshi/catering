@@ -1,5 +1,6 @@
 <template>
   <div>
+    <div style="height: 50px"></div>
     <van-tabbar v-model="active" active-color="#ffc107">
       <van-tabbar-item name="Index" icon="home-o" @click="goIndex"
         >主页</van-tabbar-item

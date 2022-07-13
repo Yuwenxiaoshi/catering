@@ -88,7 +88,9 @@ import { Dialog } from "vant";
 export default {
   methods: {
     goBack() {
-      window.history.back(-1);
+      this.$router.push(
+        `/${window.sessionStorage.getItem("active").toLocaleLowerCase()}`
+      );
     },
     onSubmit(values) {
       console.log("submit", values);

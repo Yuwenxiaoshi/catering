@@ -3,18 +3,57 @@
     <van-tabs v-model="activeName" color="#ffc107">
       <van-tab title="主页" name="a">
         <van-swipe class="my-swipe" :autoplay="3000" indicator-color="white">
-          <van-swipe-item>1</van-swipe-item>
+          <van-swipe-item @click="goPD">1</van-swipe-item>
           <van-swipe-item>2</van-swipe-item>
           <van-swipe-item>3</van-swipe-item>
           <van-swipe-item>4</van-swipe-item>
         </van-swipe>
-        <p v-for="i in 50" :key="i">
+        <div
+          class="van-hairline--bottom"
+          style="height: 40px; line-height: 40px"
+        >
+          推荐商品
+        </div>
+        <p v-for="i in 5" :key="i">
           <van-card
-            tag="标签"
+            tag="推荐"
             price="2.00"
             desc="描述信息"
             title="商品标题"
             thumb="https://img01.yzcdn.cn/vant/ipad.jpeg"
+            @click="goPD"
+          />
+        </p>
+        <div
+          class="van-hairline--bottom"
+          style="height: 40px; line-height: 40px"
+        >
+          活动商品
+        </div>
+        <p v-for="i in 5" :key="i">
+          <van-card
+            tag="活动"
+            price="2.00"
+            desc="描述信息"
+            title="商品标题"
+            thumb="https://img01.yzcdn.cn/vant/ipad.jpeg"
+            @click="goPD"
+          />
+        </p>
+        <div
+          class="van-hairline--bottom"
+          style="height: 40px; line-height: 40px"
+        >
+          热销商品
+        </div>
+        <p v-for="i in 5" :key="i">
+          <van-card
+            tag="热销"
+            price="2.00"
+            desc="描述信息"
+            title="商品标题"
+            thumb="https://img01.yzcdn.cn/vant/ipad.jpeg"
+            @click="goPD"
           />
         </p>
       </van-tab>
@@ -45,7 +84,6 @@
         </van-tree-select>
       </van-tab>
     </van-tabs>
-    <div style="height: 50px"></div>
   </div>
 </template>
 
@@ -66,6 +104,9 @@ export default {
   methods: {
     onChange(index) {
       Notify({ type: "primary", message: index });
+    },
+    goPD() {
+      this.$router.push(`/productdetails/${1}`);
     },
   },
 };

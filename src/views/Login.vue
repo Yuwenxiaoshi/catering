@@ -50,7 +50,9 @@ import { Dialog } from "vant";
 export default {
   methods: {
     goBack() {
-      window.history.back(-1);
+      this.$router.push(
+        `/${window.sessionStorage.getItem("active").toLocaleLowerCase()}`
+      );
     },
     onSubmit(values) {
       console.log("submit", values);
@@ -59,6 +61,7 @@ export default {
         message: "登录成功,正在为你跳转主页",
       }).then(() => {
         window.sessionStorage.setItem("username", this.username);
+        window.sessionStorage.setItem("active", "Index");
         this.$router.push("/index");
       });
     },

@@ -54,6 +54,31 @@ const routes = [
       noshow: true,
     },
   },
+  {
+    path: '*',
+    name: '404',
+    component: () => import('../views/404.vue'),
+    meta: {
+      title: '餐饮 - 找不到页面',
+      noshow: true,
+    }
+  },
+  {
+    path: '/productdetails/:id',
+    name: 'ProductDetails',
+    component: () => import('../views/ProductDetails.vue'),
+    meta: {
+      title: '餐饮 - 商品详情',
+    }
+  },
+  {
+    path: '/productlist/:name?',
+    name: 'ProductList',
+    component: () => import('../views/ProductList.vue'),
+    meta: {
+      title: '餐饮 - 商品列表',
+    }
+  },
 ]
 
 
