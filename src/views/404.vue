@@ -5,7 +5,7 @@
       width="100vw"
       height="50vh"
       fit="contain"
-      src="http://127.0.0.1:3030/img/404 Page Not Found _Flatline.png"
+      :src="require(`/src/assets/404 Page Not Found _Flatline.png`)"
     />
     <div class="van-hairline--bottom" style="text-align: center">
       找不到网页,请返回

@@ -8,7 +8,7 @@
           <van-swipe-item>3</van-swipe-item>
           <van-swipe-item>4</van-swipe-item>
         </van-swipe>
-        <div
+        <!-- <div
           class="van-hairline--bottom"
           style="height: 40px; line-height: 40px"
         >
@@ -55,7 +55,7 @@
             thumb="https://img01.yzcdn.cn/vant/ipad.jpeg"
             @click="goPD"
           />
-        </p>
+        </p> -->
       </van-tab>
       <van-tab title="活动" name="b" color="#ffc107">
         <van-tree-select

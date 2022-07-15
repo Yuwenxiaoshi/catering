@@ -12,7 +12,7 @@
       width="100vw"
       height="40vh"
       fit="contain"
-      src="http://127.0.0.1:3030/img/Lunch break_Flatline.png"
+      :src="require(`/src/assets/Lunch break_Flatline.png`)"
     />
     <van-form @submit="onSubmit">
       <van-field
@@ -88,9 +88,7 @@ import { Dialog } from "vant";
 export default {
   methods: {
     goBack() {
-      this.$router.push(
-        `/${window.sessionStorage.getItem("active").toLocaleLowerCase()}`
-      );
+      this.$router.push(`/${this.$store.state.active.toLocaleLowerCase()}`);
     },
     onSubmit(values) {
       console.log("submit", values);

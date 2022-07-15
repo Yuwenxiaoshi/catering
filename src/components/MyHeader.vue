@@ -4,7 +4,7 @@
       <template #left>
         <a @click="goIndex">
           <img
-            src="http://127.0.0.1:3030/img/logo.png"
+            :src="require(`/src/assets/logo.png`)"
             width="100%"
             style="margin-left: -2.5rem"
             alt=""
@@ -33,7 +33,7 @@
 <script>
 export default {
   mounted() {
-    this.username = window.sessionStorage.getItem("username") || "";
+    this.username = this.$store.state.username || "";
   },
   data() {
     return {
@@ -42,14 +42,20 @@ export default {
   },
   methods: {
     goMe() {
-      this.$router.push("/me");
-      window.sessionStorage.setItem("active", "Me");
-      location.reload();
+      if (this.$route.name == "Me") {
+        return;
+      } else {
+        this.$store.commit("goME");
+        this.$router.push("/me");
+      }
     },
     goIndex() {
-      this.$router.push("/index");
-      window.sessionStorage.setItem("active", "Index");
-      location.reload();
+      if (this.$route.name == "Index") {
+        return;
+      } else {
+        this.$store.commit("goIndex");
+        this.$router.push("/index");
+      }
     },
   },
 };

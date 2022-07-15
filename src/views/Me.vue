@@ -36,7 +36,7 @@
         width="100vw"
         height="40vh"
         fit="contain"
-        src="http://127.0.0.1:3030/img/Notifications_Isometric.png"
+        :src="require(`/src/assets/Notifications_Isometric.png`)"
       />
       <div style="text-align: center; color: red" @click="goLogin">
         请先登录
@@ -57,15 +57,16 @@ export default {
       alert("下班");
     },
     quit() {
-      sessionStorage.removeItem("username");
-      location.reload();
+      this.username = "";
+      this.$store.commit("quitUsername");
     },
     goLogin() {
       this.$router.push("/login");
     },
   },
   mounted() {
-    this.username = window.sessionStorage.getItem("username") || "";
+    this.$store.commit("getUsername");
+    this.username = this.$store.state.username || "";
   },
 };
 </script>

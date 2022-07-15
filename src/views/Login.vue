@@ -12,7 +12,7 @@
       width="100vw"
       height="40vh"
       fit="contain"
-      src="http://127.0.0.1:3030/img/Lunch Break_Two Color.png"
+      :src="require(`/src/assets/Lunch Break_Two Color.png`)"
     />
     <van-form @submit="onSubmit">
       <van-field
@@ -50,9 +50,7 @@ import { Dialog } from "vant";
 export default {
   methods: {
     goBack() {
-      this.$router.push(
-        `/${window.sessionStorage.getItem("active").toLocaleLowerCase()}`
-      );
+      this.$router.push(`/${this.$store.state.active.toLocaleLowerCase()}`);
     },
     onSubmit(values) {
       console.log("submit", values);
@@ -61,7 +59,7 @@ export default {
         message: "登录成功,正在为你跳转主页",
       }).then(() => {
         window.sessionStorage.setItem("username", this.username);
-        window.sessionStorage.setItem("active", "Index");
+        this.$store.commit("goIndex");
         this.$router.push("/index");
       });
     },

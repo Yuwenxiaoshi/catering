@@ -13,7 +13,7 @@
       width="100vw"
       height="50vh"
       fit="contain"
-      src="http://127.0.0.1:3030/img/Search engine _Monochromatic.png"
+      :src="require(`/src/assets/Search engine _Monochromatic.png`)"
     />
   </div>
 </template>
