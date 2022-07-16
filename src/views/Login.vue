@@ -52,15 +52,31 @@ export default {
     goBack() {
       this.$router.push(`/${this.$store.state.active.toLocaleLowerCase()}`);
     },
-    onSubmit(values) {
-      console.log("submit", values);
-      Dialog.alert({
-        title: "提示",
-        message: "登录成功,正在为你跳转主页",
-      }).then(() => {
-        window.sessionStorage.setItem("username", this.username);
-        this.$store.commit("goIndex");
-        this.$router.push("/index");
+    onSubmit() {
+      let url = "http://127.0.0.1:3030/v2/pro/login";
+      let data = `uname=${this.username}&upwd=${this.password}`;
+      console.log(data);
+      this.axios.post(url, data).then((res) => {
+        console.log(res);
+        if (res.data.code == 404) {
+          Dialog.alert({
+            title: "提示",
+            message: "登陆失败,请检查用户名或密码",
+          }).then(() => {});
+        } else if (res.data.code == 200) {
+          Dialog.alert({
+            title: "提示",
+            message: "登录成功,正在为你跳转主页",
+          }).then(() => {
+            window.sessionStorage.setItem("username", this.username);
+            this.$store.commit("getUsername");
+            this.$store.commit("goIndex");
+            this.$router.push("/index");
+            setTimeout(() => {
+              location.reload();
+            }, 10);
+          });
+        }
       });
     },
     goRegister() {

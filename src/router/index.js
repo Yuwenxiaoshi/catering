@@ -9,7 +9,8 @@ const routes = [
     name: 'Index',
     component: () => import('../views/Index.vue'),
     meta: {
-      title: '餐饮 - 首页'
+      title: '餐饮 - 首页',
+      keep: true,
     },
   },
   {
@@ -42,7 +43,8 @@ const routes = [
     component: () => import('../views/Register.vue'),
     meta: {
       title: '餐饮 - 注册',
-      noshow: true,
+      Footernoshow: true,
+      Herdernoshow: true,
     },
   },
   {
@@ -51,7 +53,8 @@ const routes = [
     component: () => import('../views/Login.vue'),
     meta: {
       title: '餐饮 - 登录',
-      noshow: true,
+      Footernoshow: true,
+      Herdernoshow: true,
     },
   },
   {
@@ -60,7 +63,8 @@ const routes = [
     component: () => import('../views/404.vue'),
     meta: {
       title: '餐饮 - 找不到页面',
-      noshow: true,
+      Footernoshow: true,
+      Herdernoshow: true,
     }
   },
   {
@@ -69,6 +73,7 @@ const routes = [
     component: () => import('../views/ProductDetails.vue'),
     meta: {
       title: '餐饮 - 商品详情',
+      Footernoshow: true,
     }
   },
   {

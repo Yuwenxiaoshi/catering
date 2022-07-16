@@ -57,8 +57,8 @@ export default {
       alert("下班");
     },
     quit() {
-      this.username = "";
       this.$store.commit("quitUsername");
+      location.reload();
     },
     goLogin() {
       this.$router.push("/login");

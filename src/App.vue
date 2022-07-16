@@ -1,8 +1,12 @@
 <template>
   <div>
-    <my-header v-if="!this.$route.meta.noshow"></my-header>
-    <router-view></router-view>
-    <my-footer v-if="!this.$route.meta.noshow"></my-footer>
+    <my-header v-if="!this.$route.meta.Headernoshow"></my-header>
+
+    <keep-alive>
+      <router-view v-if="this.$route.meta.keep"></router-view>
+    </keep-alive>
+    <router-view v-if="!this.$route.meta.keep"></router-view>
+    <my-footer v-if="!this.$route.meta.Footernoshow"></my-footer>
   </div>
 </template>
 
@@ -12,7 +16,7 @@ import MyHeader from "./components/MyHeader.vue";
 export default {
   components: { MyFooter, MyHeader },
   mounted() {
-    console.log(this.$route.meta.noshow);
+    console.log(this.$route.meta.keep);
   },
 };
 </script>

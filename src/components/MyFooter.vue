@@ -2,34 +2,44 @@
   <div>
     <div style="height: 50px"></div>
     <van-tabbar v-model="active" active-color="#ffc107">
-      <van-tabbar-item @click="goIndex">
+      <van-tabbar-item @click="goIndex" name="Index">
         <span>主页</span>
         <template #icon="">
           <img
-            :src="require(`/src/assets/index${active == 0 ? '1' : '0'}.svg`)"
+            :src="
+              require(`/src/assets/index${active == 'Index' ? '1' : '0'}.svg`)
+            "
           />
         </template>
       </van-tabbar-item>
-      <van-tabbar-item @click="goSearch">
+      <van-tabbar-item @click="goSearch" name="Search">
         <span>搜索</span>
         <template #icon="">
           <img
-            :src="require(`/src/assets/search${active == 1 ? '1' : '0'}.svg`)"
+            :src="
+              require(`/src/assets/search${active == 'Search' ? '1' : '0'}.svg`)
+            "
           />
         </template>
       </van-tabbar-item>
-      <van-tabbar-item @click="goShopping">
+      <van-tabbar-item @click="goShopping" name="Shopping">
         <span>购物车</span>
         <template #icon="">
           <img
-            :src="require(`/src/assets/shopping${active == 2 ? '1' : '0'}.svg`)"
+            :src="
+              require(`/src/assets/shopping${
+                active == 'Shopping' ? '1' : '0'
+              }.svg`)
+            "
           />
         </template>
       </van-tabbar-item>
-      <van-tabbar-item @click="goMe">
+      <van-tabbar-item @click="goMe" name="Me">
         <span>我的</span>
         <template #icon="">
-          <img :src="require(`/src/assets/me${active == 3 ? '1' : '0'}.svg`)" />
+          <img
+            :src="require(`/src/assets/me${active == 'Me' ? '1' : '0'}.svg`)"
+          />
         </template>
       </van-tabbar-item>
     </van-tabbar>
@@ -40,50 +50,32 @@
 export default {
   data() {
     return {
-      active: 0,
+      active: "Index",
     };
   },
   mounted() {
-    this.active = this.$store.state.active;
-    console.log(this.active);
+    this.active = sessionStorage.getItem("active") || 'Index';
   },
   methods: {
     goIndex() {
       this.$router.push("/index");
       this.$store.commit("goIndex");
-      this.active = 0;
+      this.active = "Index";
     },
     goSearch() {
       this.$router.push("/search");
       this.$store.commit("goSearch");
-      this.active = 1;
+      this.active = "Search";
     },
     goShopping() {
       this.$router.push("/shopping");
       this.$store.commit("goShopping");
-      this.active = 2;
+      this.active = "Shopping";
     },
     goMe() {
       this.$router.push("/me");
       this.$store.commit("goMe");
-      this.active = 3;
-    },
-    setActive() {
-      console.log("setActive调用");
-      console.log(this.$route.name);
-      if (this.$route.name == "Index") {
-        this.active = 0;
-        console.log("1");
-      } else if (this.$route.name == "Search") {
-        this.active = 1;
-        console.log("2");
-      } else if (this.$route.name == "Shopping") {
-        this.active = 2;
-        console.log("3");
-      } else if (this.$route.name == "Me") {
-        this.active = 3;
-        console.log("4");
-      }
+      this.active = "Me";
     },
   },
 };

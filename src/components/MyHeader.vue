@@ -33,7 +33,7 @@
 <script>
 export default {
   mounted() {
-    this.username = this.$store.state.username || "";
+    this.username = sessionStorage.getItem("username") || "";
   },
   data() {
     return {
@@ -46,7 +46,11 @@ export default {
         return;
       } else {
         this.$store.commit("goME");
+        sessionStorage.setItem("active", "Me");
         this.$router.push("/me");
+        setTimeout(() => {
+          location.reload();
+        }, 50);
       }
     },
     goIndex() {
@@ -54,7 +58,11 @@ export default {
         return;
       } else {
         this.$store.commit("goIndex");
+        sessionStorage.setItem("active", "Index");
         this.$router.push("/index");
+        setTimeout(() => {
+          location.reload();
+        }, 50);
       }
     },
   },
