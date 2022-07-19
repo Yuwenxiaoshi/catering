@@ -1,7 +1,7 @@
 <template>
   <div>
     <van-nav-bar
-      title="标题"
+      title="注册"
       left-text="返回"
       right-text="已有账号?在这登录"
       left-arrow
@@ -154,6 +154,9 @@ export default {
         });
         return;
       }
+      let url = "http://127.0.0.1:3030/v2/pro/register";
+      let data = `uname=${uname.value}&upwd=${upwd.value}&upwd2=${upwd2.value}&uemail=${uemail.value}&uphone=${uphone.value}&user_name=${user_name.value}`;
+      this.axios.post().then((res) => {});
     },
     goLogin() {
       this.$router.push("/login");

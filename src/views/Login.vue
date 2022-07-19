@@ -1,7 +1,7 @@
 <template>
   <div>
     <van-nav-bar
-      title="标题"
+      title="登录"
       left-text="返回"
       right-text="没有账号?在这注册"
       left-arrow

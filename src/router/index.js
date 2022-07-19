@@ -44,7 +44,7 @@ const routes = [
     meta: {
       title: '餐饮 - 注册',
       Footernoshow: true,
-      Herdernoshow: true,
+      Headernoshow: true,
     },
   },
   {
@@ -54,7 +54,7 @@ const routes = [
     meta: {
       title: '餐饮 - 登录',
       Footernoshow: true,
-      Herdernoshow: true,
+      Headernoshow: true,
     },
   },
   {
@@ -64,7 +64,7 @@ const routes = [
     meta: {
       title: '餐饮 - 找不到页面',
       Footernoshow: true,
-      Herdernoshow: true,
+      Headernoshow: true,
     }
   },
   {
