@@ -23,6 +23,7 @@
         :rules="[
           { required: true, message: '中文、大小写字母、和数字4-12 个字符' },
         ]"
+        @input="testUserName"
       />
       <van-field
         v-model="uname"
@@ -32,6 +33,7 @@
         :rules="[
           { required: true, message: '4到16位（字母，数字，下划线，减号）' },
         ]"
+        @input="testUname"
       />
       <van-field
         v-model="password"
@@ -155,11 +157,65 @@ export default {
         return;
       }
       let url = "http://127.0.0.1:3030/v2/pro/register";
-      let data = `uname=${uname.value}&upwd=${upwd.value}&upwd2=${upwd2.value}&uemail=${uemail.value}&uphone=${uphone.value}&user_name=${user_name.value}`;
-      this.axios.post().then((res) => {});
+      let data = `uname=${this.uname}&upwd=${this.password}&upwd2=${this.password2}&uemail=${this.email}&uphone=${this.phone}&user_name=${this.username}`;
+      this.axios.post(url, data).then((res) => {
+        console.log(res);
+        if (res.data.code == 200) {
+          Dialog.alert({
+            title: "提示",
+            message: "恭喜您注册成功,正在为你跳转到登录页面",
+          }).then(() => {
+            sessionStorage.setItem("RegUname", this.uname);
+            this.$router.push("/login");
+          });
+        } else {
+          Dialog.alert({
+            title: "提示",
+            message: "注册失败,请检查用户名或账号是否重复",
+          }).then(() => {});
+        }
+      });
     },
     goLogin() {
       this.$router.push("/login");
+    },
+    testUname() {
+      const url = `http://127.0.0.1:3030/v2/pro/check_uname?uname=${this.uname}`;
+      if (this.lock == false) {
+        return;
+      }
+      this.axios.get(url).then((res) => {
+        console.log(res);
+        if (res.data.code == 201) {
+          Dialog.alert({
+            title: "提示",
+            message: "账号重复,请修改",
+          }).then(() => {});
+        }
+      });
+      this.lock = false;
+      setTimeout(() => {
+        this.lock = true;
+      }, 1000);
+    },
+    testUserName() {
+      const url = `http://127.0.0.1:3030/v2/pro/check_user_name?user_name=${this.username}`;
+      if (this.lock2 == false) {
+        return;
+      }
+      this.axios.get(url).then((res) => {
+        console.log(res);
+        if (res.data.code == 201) {
+          Dialog.alert({
+            title: "提示",
+            message: "用户名重复,请修改",
+          }).then(() => {});
+        }
+      });
+      this.lock2 = false;
+      setTimeout(() => {
+        this.lock2 = true;
+      }, 1000);
     },
   },
   data() {
@@ -170,6 +226,8 @@ export default {
       password2: "",
       email: "",
       phone: "",
+      lock: true,
+      lock2: true,
     };
   },
 };

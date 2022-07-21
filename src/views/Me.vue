@@ -1,21 +1,17 @@
 <template>
   <div>
-    <van-row v-if="username">
+    <van-row v-if="uname">
       <van-col span="8">
-        <van-image
-          round
-          width="33vw"
-          height="33vw"
-          src="https://img01.yzcdn.cn/vant/cat.jpeg"
+        <van-image round width="33vw" height="33vw" :src="userInfo.avatar"
       /></van-col>
-      <van-col span="16" v-if="username">
+      <van-col span="16" v-if="uname">
         <van-cell-group inset>
-          <van-cell title="用户名" value="内容" />
-          <van-cell title="邮箱" value="内容" />
-          <van-cell title="电话" value="内容" /> </van-cell-group
+          <van-cell title="用户名" :value="userInfo.user_name" />
+          <van-cell title="性别" :value="userInfo.gender == 1 ? '男' : '女'" />
+          <van-cell title="电话" :value="userInfo.phone" /> </van-cell-group
       ></van-col>
     </van-row>
-    <van-cell-group inset v-if="username">
+    <van-cell-group inset v-if="uname">
       <van-cell title="修改信息" value=">" @click="bj" />
       <van-cell title="我的订单" value=">" />
       <van-cell title="我的收藏" value=">" />
@@ -27,7 +23,7 @@
       block
       style="margin-top: 1vh"
       @click="quit"
-      v-if="username"
+      v-if="uname"
       >退出当前账号</van-button
     >
     <div v-else>
@@ -49,7 +45,8 @@
 export default {
   data() {
     return {
-      username: "",
+      uname: "",
+      userInfo: null,
     };
   },
   methods: {
@@ -57,16 +54,27 @@ export default {
       alert("下班");
     },
     quit() {
-      this.$store.commit("quitUsername");
+      this.$store.commit("quitUname");
       location.reload();
     },
     goLogin() {
       this.$router.push("/login");
     },
+    getMe() {
+      let url = "http://127.0.0.1:3030/v2/pro/me";
+      let data = `uname=${this.uname}`;
+      this.axios.post(url, data).then((res) => {
+        console.log(res.data.data[0]);
+        this.userInfo = res.data.data[0];
+      });
+    },
   },
   mounted() {
-    this.$store.commit("getUsername");
-    this.username = this.$store.state.username || "";
+    this.$store.commit("getUname");
+    this.uname = this.$store.state.uname || "";
+    if (this.uname) {
+      this.getMe();
+    }
   },
 };
 </script>

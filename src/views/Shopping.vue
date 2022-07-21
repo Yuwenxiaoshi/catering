@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-if="!username">
+    <div v-if="!uname">
       <div style="height: 4vh"></div>
       <van-image
         width="100vw"
@@ -12,7 +12,7 @@
         请先登录
       </div>
     </div>
-    <div v-if="!data && username">
+    <div v-if="!data && uname">
       <div style="height: 4vh"></div>
       <van-image
         width="100vw"
@@ -22,7 +22,7 @@
       />
       <div style="text-align: center; color: red">购物车为空</div>
     </div>
-    <div v-if="data && username">
+    <div v-if="data && uname">
       <div style="height: 2px"></div>
       <van-swipe-cell v-for="i in 5" :key="i">
         <van-card
@@ -56,7 +56,7 @@ export default {
   data() {
     return {
       data: 1,
-      username: "",
+      uname: "",
       value: 1,
     };
   },
@@ -69,7 +69,7 @@ export default {
     },
   },
   mounted() {
-    this.username = sessionStorage.getItem("username") || "";
+    this.uname = sessionStorage.getItem("uname") || "";
   },
 };
 </script>

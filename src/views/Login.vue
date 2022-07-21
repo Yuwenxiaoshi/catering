@@ -16,7 +16,7 @@
     />
     <van-form @submit="onSubmit">
       <van-field
-        v-model="username"
+        v-model="uname"
         name="用户名"
         label="用户名"
         placeholder="用户名"
@@ -54,7 +54,7 @@ export default {
     },
     onSubmit() {
       let url = "http://127.0.0.1:3030/v2/pro/login";
-      let data = `uname=${this.username}&upwd=${this.password}`;
+      let data = `uname=${this.uname}&upwd=${this.password}`;
       console.log(data);
       this.axios.post(url, data).then((res) => {
         console.log(res);
@@ -68,13 +68,13 @@ export default {
             title: "提示",
             message: "登录成功,正在为你跳转主页",
           }).then(() => {
-            window.sessionStorage.setItem("username", this.username);
-            this.$store.commit("getUsername");
+            window.sessionStorage.setItem("uname", this.uname);
+            this.$store.commit("getUname");
             this.$store.commit("goIndex");
             this.$router.push("/index");
             setTimeout(() => {
               location.reload();
-            }, 10);
+            }, 50);
           });
         }
       });
@@ -85,9 +85,12 @@ export default {
   },
   data() {
     return {
-      username: "",
+      uname: "",
       password: "",
     };
+  },
+  mounted() {
+    this.uname = sessionStorage.getItem("RegUname") || "";
   },
 };
 </script>

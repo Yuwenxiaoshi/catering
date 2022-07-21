@@ -5,7 +5,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    username: "",
+    uname: "",
     active: 'Index',
     imgUrl: "http://127.0.0.1:3030/img",
     userInfo: {},
@@ -13,12 +13,12 @@ export default new Vuex.Store({
   getters: {
   },
   mutations: {
-    getUsername(state) {
-      state.username = window.sessionStorage.getItem('username')
+    getUname(state) {
+      state.uname = window.sessionStorage.getItem('uname')
     },
-    quitUsername(state) {
-      window.sessionStorage.removeItem("username");
-      state.username = window.sessionStorage.getItem('username')
+    quitUname(state) {
+      window.sessionStorage.removeItem("uname");
+      state.uname = window.sessionStorage.getItem('uname')
     },
     goMe(state) {
       state.active = 'Me'

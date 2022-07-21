@@ -12,7 +12,7 @@
         </a>
       </template>
 
-      <template #right v-if="username">
+      <template #right v-if="uname">
         <van-image
           round
           width="2.5rem"
@@ -33,11 +33,11 @@
 <script>
 export default {
   mounted() {
-    this.username = sessionStorage.getItem("username") || "";
+    this.uname = sessionStorage.getItem("uname") || "";
   },
   data() {
     return {
-      username: "",
+      uname: "",
     };
   },
   methods: {
