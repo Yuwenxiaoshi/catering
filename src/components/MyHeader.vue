@@ -17,7 +17,7 @@
           round
           width="2.5rem"
           height="2.5rem"
-          src="https://img01.yzcdn.cn/vant/cat.jpeg"
+          :src="uimg"
           @click="goMe"
         />
       </template>
@@ -34,10 +34,12 @@
 export default {
   mounted() {
     this.uname = sessionStorage.getItem("uname") || "";
+    this.getMe();
   },
   data() {
     return {
       uname: "",
+      uimg: "",
     };
   },
   methods: {
@@ -64,6 +66,13 @@ export default {
           location.reload();
         }, 50);
       }
+    },
+    getMe() {
+      let url = "http://127.0.0.1:3030/v2/pro/me";
+      let data = `uname=${this.uname}`;
+      this.axios.post(url, data).then((res) => {
+        this.uimg = res.data.data[0].avatar;
+      });
     },
   },
 };

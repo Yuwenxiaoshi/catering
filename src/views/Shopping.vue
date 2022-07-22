@@ -24,15 +24,22 @@
     </div>
     <div v-if="data && uname">
       <div style="height: 2px"></div>
-      <van-swipe-cell v-for="i in 5" :key="i">
+      <van-swipe-cell v-for="i in data" :key="i.product_id">
         <van-card
-          price="2.00"
-          desc="描述信息"
-          title="商品标题"
-          thumb="https://img01.yzcdn.cn/vant/ipad.jpeg"
+          :price="i.price"
+          :desc="i.subtitle"
+          :title="i.title"
+          :thumb="i.limg"
+          :thumb-link="`http://localhost:8080/productdetails/${i.product_id}`"
         >
           <template #footer>
-            <van-stepper v-model="value" />
+            <van-stepper
+              v-model="i.count"
+              theme="round"
+              button-size="22"
+              disable-input
+              :change="addPrice(i.price, i.count)"
+            />
           </template>
         </van-card>
         <template #right>
@@ -41,7 +48,7 @@
       </van-swipe-cell>
       <div style="height: 50px"></div>
       <van-submit-bar
-        :price="0"
+        :price="price"
         button-text="提交订单"
         @submit="onSubmit"
         style="margin-bottom: 50px"
@@ -55,9 +62,9 @@
 export default {
   data() {
     return {
-      data: 1,
+      data: null,
       uname: "",
-      value: 1,
+      price: 0,
     };
   },
   methods: {
@@ -67,14 +74,28 @@ export default {
     onSubmit() {
       alert("购买成功");
     },
+    getShopping() {
+      let url = `http://127.0.0.1:3030/v2/pro/shopping?uname=${this.uname}`;
+      this.axios.get(url).then((res) => {
+        this.data = res.data.data;
+      });
+    },
+    goPD(id) {
+      this.$router.push(`/productdetails/${id}`);
+    },
+    addPrice(price, num) {
+      this.price = 0;
+      this.price += price * num;
+    },
   },
   mounted() {
     this.uname = sessionStorage.getItem("uname") || "";
+    this.getShopping();
   },
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .goods-card {
   margin: 0;
   background-color: white;
@@ -82,5 +103,15 @@ export default {
 
 .delete-button {
   height: 100%;
+}
+.van-card__price {
+  color: red;
+}
+.van-stepper--round .van-stepper__minus {
+  color: #ffc107;
+  border-color: #ffc107;
+}
+.van-stepper--round .van-stepper__plus {
+  background-color: #ffc107;
 }
 </style>

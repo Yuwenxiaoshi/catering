@@ -7,16 +7,16 @@
         placeholder="请输入商品关键词"
         @search="onSearch"
         @cancel="onCancel"
+        @keydown="getP"
       />
     </form>
-    <p v-for="i in 5" :key="i">
+    <p v-for="i in data" :key="i.lid">
       <van-card
-        tag="推荐"
-        price="2.00"
-        desc="描述信息"
-        title="商品标题"
-        thumb="https://img01.yzcdn.cn/vant/ipad.jpeg"
-        @click="goPD"
+        :price="i.price"
+        :desc="i.subtitle"
+        :title="i.title"
+        :thumb="i.img"
+        @click="goPD(i.lid)"
       />
     </p>
   </div>
@@ -28,6 +28,7 @@ export default {
     return {
       username: "",
       value: "",
+      data: {},
     };
   },
   methods: {
@@ -39,9 +40,19 @@ export default {
       window.sessionStorage.setItem("active", "Search");
       this.value = "";
     },
-    goPD() {
-      this.$router.push(`/productdetails/${1}`);
+    goPD(id) {
+      this.$router.push(`/productdetails/${id}`);
     },
+    getP(str = "") {
+      let url = `http://127.0.0.1:3030/v2/pro/prolist?lname=${str}`;
+      this.axios.get(url).then((res) => {
+        this.data = res.data.data;
+      });
+    },
+  },
+  mounted() {
+    this.value = this.$route.params.name;
+    this.getP(this.$route.params.name);
   },
 };
 </script>

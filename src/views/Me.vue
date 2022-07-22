@@ -46,7 +46,7 @@ export default {
   data() {
     return {
       uname: "",
-      userInfo: null,
+      userInfo: {},
     };
   },
   methods: {
@@ -64,7 +64,6 @@ export default {
       let url = "http://127.0.0.1:3030/v2/pro/me";
       let data = `uname=${this.uname}`;
       this.axios.post(url, data).then((res) => {
-        console.log(res.data.data[0]);
         this.userInfo = res.data.data[0];
       });
     },

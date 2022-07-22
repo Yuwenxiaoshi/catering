@@ -3,7 +3,10 @@
     <van-tabs v-model="activeName" color="#ffc107">
       <van-tab title="主页" name="a">
         <van-swipe class="my-swipe" :autoplay="3000" indicator-color="white">
-          <van-swipe-item @click="goPD" v-for="(i, n) in lbt" :key="n"
+          <van-swipe-item
+            @click="goPD(i.product_id)"
+            v-for="(i, n) in lbt"
+            :key="n"
             ><img :src="i.img" alt="" width="100%" height="15%"
           /></van-swipe-item>
         </van-swipe>
@@ -21,7 +24,11 @@
             :thumb="i.img"
           >
             <template #footer>
-              <van-button size="mini" plain color="#ffc107" @click="goPD"
+              <van-button
+                size="mini"
+                plain
+                color="#ffc107"
+                @click="goPD(i.product_id)"
                 >查看详情</van-button
               >
             </template>
@@ -41,7 +48,11 @@
             :thumb="i.img"
           >
             <template #footer>
-              <van-button size="mini" plain color="#ffc107" @click="goPD"
+              <van-button
+                size="mini"
+                plain
+                color="#ffc107"
+                @click="goPD(i.product_id)"
                 >查看详情</van-button
               >
             </template>
@@ -61,7 +72,11 @@
             :thumb="i.img"
           >
             <template #footer>
-              <van-button size="mini" plain color="#ffc107" @click="goPD"
+              <van-button
+                size="mini"
+                plain
+                color="#ffc107"
+                @click="goPD(i.product_id)"
                 >查看详情</van-button
               >
             </template>
@@ -145,8 +160,8 @@ export default {
     onChange(index) {
       Notify({ type: "primary", message: index });
     },
-    goPD() {
-      this.$router.push(`/productdetails/${1}`);
+    goPD(id) {
+      this.$router.push(`/productdetails/${id}`);
     },
     getLbt() {
       let url = "http://127.0.0.1:3030/v2/pro/lbt";
