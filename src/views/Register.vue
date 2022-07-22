@@ -93,7 +93,6 @@ export default {
       this.$router.push(`/${this.$store.state.active.toLocaleLowerCase()}`);
     },
     onSubmit(values) {
-      console.log("submit", values);
       if (!/^[\u4e00-\u9fa5a-zA-Z0-9]{4,12}$/.test(this.username)) {
         Dialog.alert({
           title: "提示",
@@ -159,7 +158,6 @@ export default {
       let url = "http://127.0.0.1:3030/v2/pro/register";
       let data = `uname=${this.uname}&upwd=${this.password}&upwd2=${this.password2}&uemail=${this.email}&uphone=${this.phone}&user_name=${this.username}`;
       this.axios.post(url, data).then((res) => {
-        console.log(res);
         if (res.data.code == 200) {
           Dialog.alert({
             title: "提示",
@@ -185,7 +183,6 @@ export default {
         return;
       }
       this.axios.get(url).then((res) => {
-        console.log(res);
         if (res.data.code == 201) {
           Dialog.alert({
             title: "提示",
@@ -204,7 +201,6 @@ export default {
         return;
       }
       this.axios.get(url).then((res) => {
-        console.log(res);
         if (res.data.code == 201) {
           Dialog.alert({
             title: "提示",

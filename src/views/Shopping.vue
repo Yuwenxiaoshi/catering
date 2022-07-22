@@ -24,7 +24,7 @@
     </div>
     <div v-if="data && uname">
       <div style="height: 2px"></div>
-      <van-swipe-cell v-for="i in data" :key="i.product_id">
+      <van-swipe-cell v-for="(i, n) in data" :key="n">
         <van-card
           :price="i.price"
           :desc="i.subtitle"
@@ -49,7 +49,13 @@
           </template>
         </van-card>
         <template #right>
-          <van-button square text="删除" type="danger" class="delete-button" />
+          <van-button
+            square
+            text="删除"
+            type="danger"
+            class="delete-button"
+            @click="delPd(i.product_id)"
+          />
         </template>
       </van-swipe-cell>
       <div style="height: 50px"></div>
@@ -65,6 +71,7 @@
 </template>
 
 <script>
+import { Dialog } from "vant";
 export default {
   data() {
     return {
@@ -94,7 +101,6 @@ export default {
     getShopping() {
       let url = `http://127.0.0.1:3030/v2/pro/shopping?uname=${this.uname}`;
       this.axios.get(url).then((res) => {
-        console.log(res.data.data);
         this.data = res.data.data;
       });
     },
@@ -109,6 +115,21 @@ export default {
       // console.log("Ic: ", Ic);
       // console.log(" count: ", count);
       // console.log("price: ", price);
+    },
+    delPd(id) {
+      let url = `http://127.0.0.1:3030/v2/pro/delPd?uname=${sessionStorage.getItem(
+        "uname"
+      )}&id=${id}`;
+      this.axios.delete(url).then((res) => {
+        if (res.data.code == 200) {
+          Dialog.alert({
+            title: "提示",
+            message: "删除成功",
+          }).then(() => {
+            location.reload();
+          });
+        }
+      });
     },
   },
   mounted() {

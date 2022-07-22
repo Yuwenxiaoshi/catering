@@ -21,12 +21,13 @@
     </div>
     <van-goods-action>
       <van-goods-action-icon icon="chat-o" text="客服" color="#ee0a24" />
-      <van-goods-action-icon icon="cart-o" text="购物车" />
+      <van-goods-action-icon icon="cart-o" text="购物车" @click="goSc" />
       <van-goods-action-icon icon="star" text="收藏" color="#bbb" />
       <van-goods-action-button
         type="warning"
         text="加入购物车"
-        @click="setShow"
+        @click="addSc"
+        :disabled="uname ? false : true"
       />
       <van-goods-action-button type="danger" text="立即购买" @click="setShow" />
     </van-goods-action>
@@ -34,10 +35,12 @@
 </template>
 
 <script>
+import { Dialog } from "vant";
 import { ImagePreview } from "vant";
 export default {
   data() {
     return {
+      uname: null,
       value: 4.5,
       data: {},
     };
@@ -62,9 +65,45 @@ export default {
         this.data = res.data.data[0];
       });
     },
+    addSc() {
+      let url = "http://127.0.0.1:3030/v2/pro/postlist";
+      let proInfo = this.data;
+      let data = `img=${proInfo.img}&subtitle=${
+        proInfo.subtitle
+      }&uname=${sessionStorage.getItem("uname")}&lid=${
+        this.$route.params.id
+      }&title=${proInfo.title}&price=${proInfo.price}`;
+      this.axios.post(url, data).then((res) => {
+        if (res.data.code == 200) {
+          Dialog.alert({
+            title: "提示",
+            message: "添加成功",
+          }).then(() => {
+            return;
+          });
+        }
+      });
+      Dialog.alert({
+        title: "提示",
+        message: "购物车已有该物品",
+      }).then(() => {
+        location.reload();
+      });
+    },
+    goSc() {
+      if (this.uname) {
+        this.$router.push("/shopping");
+      } else {
+        Dialog.alert({
+          title: "提示",
+          message: "请先登录",
+        }).then(() => {});
+      }
+    },
   },
   mounted() {
     this.getPD(this.$route.params.id);
+    this.uname = sessionStorage.getItem("uname");
   },
 };
 </script>

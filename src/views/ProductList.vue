@@ -10,15 +10,25 @@
         @keydown="getP"
       />
     </form>
-    <p v-for="i in data" :key="i.lid">
-      <van-card
-        :price="i.price"
-        :desc="i.subtitle"
-        :title="i.title"
-        :thumb="i.img"
-        @click="goPD(i.lid)"
+    <div v-if="data">
+      <p v-for="i in data" :key="i.lid">
+        <van-card
+          :price="i.price"
+          :desc="i.subtitle"
+          :title="i.title"
+          :thumb="i.img"
+          @click="goPD(i.lid)"
+        />
+      </p>
+    </div>
+    <div v-if="!data">
+      <van-image
+        width="100vw"
+        height="50vh"
+        fit="contain"
+        :src="require(`/src/assets/404 Page Not Found _Two Color.svg`)"
       />
-    </p>
+    </div>
   </div>
 </template>
 
@@ -26,14 +36,21 @@
 export default {
   data() {
     return {
-      username: "",
       value: "",
-      data: {},
+      data: null,
     };
+  },
+  watch: {
+    value(to, from) {
+      if (!to && from) {
+        this.$router.push(`/search`);
+      }
+    },
   },
   methods: {
     onSearch() {
       this.$router.push(`/productlist/${this.value}`);
+      location.reload();
     },
     onCancel() {
       this.$router.push("/search");
