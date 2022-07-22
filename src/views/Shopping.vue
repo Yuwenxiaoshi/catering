@@ -38,8 +38,14 @@
               theme="round"
               button-size="22"
               disable-input
-              :change="addPrice(i.price, i.count)"
+              :plus="putPrice(i.price, i.count, i.is_checked)"
             />
+            <van-checkbox
+              v-model="i.is_checked"
+              checked-color="#ffc107"
+              :click="setIc(i.price, i.count, i.is_checked)"
+              >选中</van-checkbox
+            >
           </template>
         </van-card>
         <template #right>
@@ -48,7 +54,7 @@
       </van-swipe-cell>
       <div style="height: 50px"></div>
       <van-submit-bar
-        :price="price"
+        :price="price * 100"
         button-text="提交订单"
         @submit="onSubmit"
         style="margin-bottom: 50px"
@@ -67,6 +73,17 @@ export default {
       price: 0,
     };
   },
+  computed: {
+    totalPrice() {
+      let prices = 0;
+      this.data.forEach((item) => {
+        if (item.isChecked) {
+          prices += item.price;
+        }
+      });
+      return prices;
+    },
+  },
   methods: {
     goLogin() {
       this.$router.push("/login");
@@ -77,15 +94,21 @@ export default {
     getShopping() {
       let url = `http://127.0.0.1:3030/v2/pro/shopping?uname=${this.uname}`;
       this.axios.get(url).then((res) => {
+        console.log(res.data.data);
         this.data = res.data.data;
       });
     },
     goPD(id) {
       this.$router.push(`/productdetails/${id}`);
     },
-    addPrice(price, num) {
-      this.price = 0;
-      this.price += price * num;
+    setIc(price, count, Ic) {
+      if (Ic) {
+      }
+    },
+    putPrice(price, count, Ic) {
+      // console.log("Ic: ", Ic);
+      // console.log(" count: ", count);
+      // console.log("price: ", price);
     },
   },
   mounted() {
