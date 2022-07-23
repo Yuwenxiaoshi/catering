@@ -15,9 +15,6 @@ import MyFooter from "./components/MyFooter.vue";
 import MyHeader from "./components/MyHeader.vue";
 export default {
   components: { MyFooter, MyHeader },
-  mounted() {
-    console.log(this.$route.meta.keep);
-  },
 };
 </script>
 

@@ -71,7 +71,9 @@ export default {
       let url = "http://127.0.0.1:3030/v2/pro/me";
       let data = `uname=${this.uname}`;
       this.axios.post(url, data).then((res) => {
-        this.uimg = res.data.data[0].avatar;
+        if (res.data.code == 200) {
+          this.uimg = res.data.data[0].avatar;
+        }
       });
     },
   },

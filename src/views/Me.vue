@@ -15,6 +15,7 @@
       <van-cell title="修改信息" value=">" @click="bj" />
       <van-cell title="我的订单" value=">" />
       <van-cell title="我的收藏" value=">" />
+      <van-cell title="收货地址" value=">" @click="goSh" />
       <van-cell title="历史足迹" value=">" />
       <van-cell title="设置" value=">" />
     </van-cell-group>
@@ -66,6 +67,9 @@ export default {
       this.axios.post(url, data).then((res) => {
         this.userInfo = res.data.data[0];
       });
+    },
+    goSh() {
+      this.$router.push("/receiving");
     },
   },
   mounted() {

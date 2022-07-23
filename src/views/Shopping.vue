@@ -38,12 +38,8 @@
               theme="round"
               button-size="22"
               disable-input
-              :plus="putPrice(i.price, i.count, i.is_checked)"
             />
-            <van-checkbox
-              v-model="i.is_checked"
-              checked-color="#ffc107"
-              :click="setIc(i.price, i.count, i.is_checked)"
+            <van-checkbox v-model="i.is_checked" checked-color="#ffc107"
               >选中</van-checkbox
             >
           </template>
@@ -60,7 +56,7 @@
       </van-swipe-cell>
       <div style="height: 50px"></div>
       <van-submit-bar
-        :price="price * 100"
+        :price="totalPrice"
         button-text="提交订单"
         @submit="onSubmit"
         style="margin-bottom: 50px"
@@ -77,18 +73,16 @@ export default {
     return {
       data: null,
       uname: "",
-      price: 0,
+      prices: 0,
     };
   },
   computed: {
     totalPrice() {
-      let prices = 0;
-      this.data.forEach((item) => {
-        if (item.isChecked) {
-          prices += item.price;
-        }
-      });
-      return prices;
+      return this.data
+        .filter((item) => item.is_checked)
+        .reduce((pre, cur) => {
+          return pre + cur.price * cur.count * 100;
+        }, 0);
     },
   },
   methods: {
@@ -106,15 +100,6 @@ export default {
     },
     goPD(id) {
       this.$router.push(`/productdetails/${id}`);
-    },
-    setIc(price, count, Ic) {
-      if (Ic) {
-      }
-    },
-    putPrice(price, count, Ic) {
-      // console.log("Ic: ", Ic);
-      // console.log(" count: ", count);
-      // console.log("price: ", price);
     },
     delPd(id) {
       let url = `http://127.0.0.1:3030/v2/pro/delPd?uname=${sessionStorage.getItem(

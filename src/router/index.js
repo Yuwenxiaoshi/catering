@@ -84,6 +84,24 @@ const routes = [
       title: '餐饮 - 商品列表',
     }
   },
+  {
+    path: '/receiving',
+    name: 'Receiving',
+    component: () => import('../views/Receiving.vue'),
+    meta: {
+      title: '我的 - 收货地址',
+      Footernoshow: true,
+    }
+  },
+  {
+    path: '/newreceiving',
+    name: 'NewReceiving',
+    component: () => import('../views/NewReceiving.vue'),
+    meta: {
+      title: '我的 - 修改地址',
+      Footernoshow: true,
+    }
+  },
 ]
 
 

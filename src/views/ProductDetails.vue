@@ -78,16 +78,15 @@ export default {
           Dialog.alert({
             title: "提示",
             message: "添加成功",
+          }).then(() => {});
+        } else {
+          Dialog.alert({
+            title: "提示",
+            message: "购物车已有该物品",
           }).then(() => {
-            return;
+            location.reload();
           });
         }
-      });
-      Dialog.alert({
-        title: "提示",
-        message: "购物车已有该物品",
-      }).then(() => {
-        location.reload();
       });
     },
     goSc() {

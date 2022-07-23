@@ -55,9 +55,7 @@ export default {
     onSubmit() {
       let url = "http://127.0.0.1:3030/v2/pro/login";
       let data = `uname=${this.uname}&upwd=${this.password}`;
-      console.log(data);
       this.axios.post(url, data).then((res) => {
-        console.log(res);
         if (res.data.code == 404) {
           Dialog.alert({
             title: "提示",
