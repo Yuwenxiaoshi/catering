@@ -52,7 +52,7 @@ export default {
   },
   methods: {
     bj() {
-      alert("下班");
+      this.$router.push(`set/${this.uname}`);
     },
     quit() {
       this.$store.commit("quitUname");

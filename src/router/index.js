@@ -73,6 +73,7 @@ const routes = [
     component: () => import('../views/ProductDetails.vue'),
     meta: {
       title: '餐饮 - 商品详情',
+      Headernoshow: true,
       Footernoshow: true,
     }
   },
@@ -101,6 +102,16 @@ const routes = [
       title: '我的 - 修改地址',
       Footernoshow: true,
     }
+  },
+  {
+    path: '/set/:uname',
+    name: 'Set',
+    component: () => import('../views/SetMe.vue'),
+    meta: {
+      title: '餐饮 - 修改信息',
+      Headernoshow: true,
+      Footernoshow: true
+    },
   },
 ]
 

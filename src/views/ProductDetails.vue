@@ -1,5 +1,11 @@
 <template>
   <div v-if="data">
+    <van-nav-bar
+      left-text="返回"
+      left-arrow
+      @click-left="goBack"
+      title="商品详情"
+    />
     <div style="height: 20px; line-height: 1.25rem; color: red" @click="goBack">
       <van-icon name="arrow-left" />
     </div>
@@ -59,6 +65,9 @@ export default {
         this.show == false;
       }
     },
+    goBack() {
+      window.history.back(-1);
+    },
     getPD(id) {
       let url = `http://127.0.0.1:3030/v2/pro/getPD?id=${id}`;
       this.axios.get(url).then((res) => {
@@ -115,5 +124,11 @@ a {
 }
 a:active {
   color: #ffc107; /*鼠标点击时的颜色*/
+}
+.van-nav-bar__text {
+  color: black !important;
+}
+.van-icon-arrow-left:before {
+  color: #ffc107 !important;
 }
 </style>
