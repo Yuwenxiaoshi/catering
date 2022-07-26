@@ -17,10 +17,10 @@
     <van-form @submit="onSubmit">
       <van-field
         v-model="uname"
-        name="用户名"
-        label="用户名"
-        placeholder="用户名"
-        :rules="[{ required: true, message: '请填写用户名' }]"
+        name="账号"
+        label="账号"
+        placeholder="账号"
+        :rules="[{ required: true, message: '请填写账号' }]"
       />
       <van-field
         v-model="password"
