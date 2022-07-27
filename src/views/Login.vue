@@ -31,13 +31,7 @@
         :rules="[{ required: true, message: '请填写密码' }]"
       />
       <div style="margin: 16px">
-        <van-button
-          round
-          block
-          type="info"
-          plain
-          color="#ffc107"
-          native-type="submit"
+        <van-button round block type="info" color="#ffc107" native-type="submit"
           >登录</van-button
         >
       </div>

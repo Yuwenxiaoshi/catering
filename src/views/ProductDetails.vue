@@ -6,9 +6,6 @@
       @click-left="goBack"
       title="商品详情"
     />
-    <div style="height: 20px; line-height: 1.25rem; color: red" @click="goBack">
-      <van-icon name="arrow-left" />
-    </div>
     <van-image width="100vw" height="35vh" :src="data.img" @click="pigImg" />
     <div style="font-size: 2rem; line-height: 2.5rem; height: 2.5rem">
       {{ data.title }}

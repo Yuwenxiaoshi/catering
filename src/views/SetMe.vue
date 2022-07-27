@@ -22,7 +22,7 @@
         span="12"
         style="height: 50vw; line-height: 50vw; text-align: center"
       >
-        点击头像修改图片
+        点击图片修改头像
       </van-col>
     </van-row>
     <van-cell-group inset>
@@ -64,20 +64,31 @@
         type="password"
         label="原密码"
         placeholder="请输入原密码"
+        @blur="testPwd1"
       />
       <van-field
         v-model="pwd2"
         type="password"
         label="密码"
         placeholder="请输入要修改的密码"
+        @blur="testPwd2"
       />
       <van-field
         v-model="pwd3"
         type="password"
         label="验证密码"
         placeholder="两次密码保持一致"
+        @blur="testPwd3"
       />
-      <van-button round block type="info" native-type="submit">提交</van-button>
+      <van-button
+        round
+        block
+        type="info"
+        native-type="submit"
+        :disabled="pwdbtn ? true : false"
+        @click="setPwd"
+        >提交</van-button
+      >
     </van-action-sheet>
     <van-action-sheet v-model="sexshow" title="修改性别">
       <van-radio-group v-model="radio">
@@ -88,16 +99,28 @@
     </van-action-sheet>
     <van-action-sheet v-model="phoneshow" title="修改手机号">
       <van-field
-        v-model="phone"
+        v-model="phone1"
         type="tel"
-        label="邮箱"
+        label="原手机号"
+        placeholder="请输入原手机号"
+      />
+      <van-field
+        v-model="phone2"
+        type="tel"
+        label="手机号"
         placeholder="请输入手机号"
       />
       <van-button round block type="info" native-type="submit">提交</van-button>
     </van-action-sheet>
     <van-action-sheet v-model="emailshow" title="修改邮箱">
       <van-field
-        v-model="email"
+        v-model="email1"
+        type="text"
+        label="原邮箱"
+        placeholder="请输入原邮箱"
+      />
+      <van-field
+        v-model="email2"
         type="text"
         label="邮箱"
         placeholder="请输入邮箱"
@@ -121,15 +144,18 @@ export default {
       sex: "",
       radio: "0",
       phoneshow: false,
-      phone: null,
+      phone1: null,
+      phone2: null,
       emailshow: false,
-      email: "",
+      email1: "",
+      email2: "",
       pwdshow: false,
-      pwd1: null,
+      pwd1: "",
       pwd2: null,
       pwd3: null,
       uid: null,
       lock2: true,
+      pwdbtn: true,
     };
   },
   methods: {
@@ -139,6 +165,7 @@ export default {
       this.axios.post(url, data).then((res) => {
         this.userInfo = res.data.data[0];
         this.uid = res.data.data[0].uid;
+        this.radio = res.data.data[0].gender + "";
       });
     },
     goBack() {
@@ -216,6 +243,86 @@ export default {
       setTimeout(() => {
         this.lock2 = true;
       }, 1000);
+    },
+    testPwd1() {
+      if (!this.pwd1) {
+        return;
+      }
+      const url = `http://127.0.0.1:3030/v2/pro/textpwd?upwd=${this.pwd1}`;
+      this.axios.get(url).then((res) => {
+        if (res.data.code == 200) {
+          this.pwdbtn = false;
+        } else {
+          Dialog.alert({
+            title: "提示",
+            message: "原密码错误,请检查",
+          }).then(() => {
+            this.pwdbtn = true;
+          });
+        }
+      });
+    },
+    testPwd2() {
+      if (!this.pwd2) {
+        return;
+      }
+      if (
+        !/(((?=.*[A-Z])(?=.*[a-z]))|((?=.*[a-z])(?=.*[A-Z]))|((?=.*[A-Z])(?=.*[0-9]))|((?=.*[0-9])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[0-9])(?=.*[a-z]))|((?=.*[A-Z])(?=.*[a-z])(?=[0-9]))|((?=.*[A-Z])(?=.*[0-9])(?=[a-z]))|((?=.*[a-z])(?=.*[A-Z])(?=[0-9]))|((?=.*[a-z])(?=.*[0-9])(?=[A-Z]))|((?=.*[0-9])(?=.*[A-Z])(?=[a-z]))|((?=.*[0-9])(?=.*[a-z])(?=[A-Z])))^[a-zA-Z0-9]{8,16}$/gm.test(
+          this.pwd2
+        )
+      ) {
+        Dialog.alert({
+          title: "提示",
+          message:
+            "密码格式错误(8-16个字符，必须包含数字、大写字母、小写字母中的2种字符)",
+        }).then(() => {
+          this.pwdbtn = true;
+        });
+      } else {
+        this.pwdbtn = false;
+      }
+    },
+    testPwd3() {
+      if (!this.pwd3) {
+        return;
+      }
+      if (this.Pwd3 != this.Pwd1 && this.Pwd3) {
+        Dialog.alert({
+          title: "提示",
+          message: "两次密码不一致",
+        }).then(() => {
+          this.pwdbtn = true;
+        });
+      } else {
+        this.pwdbtn = false;
+      }
+    },
+    setPwd() {
+      if (this.pwd1 && this.pwd2 && this.pwd3) {
+        let url = "http://127.0.0.1:3030/v2/pro/setupwd";
+        let data = `upwd=${this.pwd2}&uid=${this.uid}`;
+        this.axios.put(url, data).then((res) => {
+          if (res.data.code == 200) {
+            Dialog.alert({
+              title: "提示",
+              message: "密码修改成功,请重新登录",
+            }).then(() => {
+              sessionStorage.removeItem("uname");
+              this.$router.push("/login");
+            });
+          } else {
+            Dialog.alert({
+              title: "提示",
+              message: "密码修改失败,请重试",
+            }).then(() => {});
+          }
+        });
+      } else {
+        Dialog.alert({
+          title: "提示",
+          message: "请输入完整",
+        }).then(() => {});
+      }
     },
   },
   mounted() {

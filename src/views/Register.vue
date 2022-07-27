@@ -71,13 +71,7 @@
         :rules="[{ required: true, message: '手机号格式错误' }]"
       />
       <div style="margin: 16px">
-        <van-button
-          round
-          block
-          type="info"
-          plain
-          color="#ffc107"
-          native-type="submit"
+        <van-button round block type="info" color="#ffc107" native-type="submit"
           >注册</van-button
         >
       </div>
