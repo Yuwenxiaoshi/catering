@@ -6,11 +6,21 @@
       /></van-col>
       <van-col span="16" v-if="uname">
         <van-cell-group inset>
-          <van-cell title="用户名" :value="userInfo.user_name" />
+          <van-cell
+            title="用户名"
+            :value="userInfo.user_name"
+            style="white-space: nowrap"
+          />
           <van-cell title="性别" :value="userInfo.gender == 1 ? '男' : '女'" />
           <van-cell title="电话" :value="userInfo.phone" /> </van-cell-group
       ></van-col>
     </van-row>
+    <van-grid>
+      <van-grid-item icon="todo-list-o" text="点击签到" dot />
+      <van-grid-item icon="diamond-o" text="会员权益" />
+      <van-grid-item icon="cash-back-record" text="账户余额" />
+      <van-grid-item icon="shop-o" text="积分商城" />
+    </van-grid>
     <van-cell-group inset v-if="uname">
       <van-cell title="修改信息" value=">" @click="bj" />
       <van-cell title="我的订单" value=">" />
@@ -66,6 +76,10 @@ export default {
       let data = `uname=${this.uname}`;
       this.axios.post(url, data).then((res) => {
         this.userInfo = res.data.data[0];
+        this.userInfo.phone = this.userInfo.phone.replace(
+          /(\d{3})\d{4}(\d{4})/,
+          "$1****$2"
+        );
       });
     },
     goSh() {

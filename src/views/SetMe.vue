@@ -8,21 +8,12 @@
     />
     <van-row>
       <van-col span="12">
-        <van-uploader>
-          <van-image
-            width="50vw"
-            height="50vw"
-            round
-            :src="userInfo.avatar"
-            :after-read="afterRead"
-          />
-        </van-uploader>
+        <van-image width="50vw" height="50vw" round :src="userInfo.avatar" />
       </van-col>
       <van-col
         span="12"
         style="height: 50vw; line-height: 50vw; text-align: center"
-      >
-        点击图片修改头像
+        ><van-uploader :after-read="afterRead" />
       </van-col>
     </van-row>
     <van-cell-group inset>
@@ -95,7 +86,9 @@
         <van-radio name="0" style="margin-bottom: 3px">女</van-radio>
         <van-radio name="1" style="margin-bottom: 3px">男</van-radio>
       </van-radio-group>
-      <van-button round block type="info" native-type="submit">提交</van-button>
+      <van-button round block type="info" native-type="submit" @click="setSex"
+        >提交</van-button
+      >
     </van-action-sheet>
     <van-action-sheet v-model="phoneshow" title="修改手机号">
       <van-field
@@ -166,6 +159,10 @@ export default {
         this.userInfo = res.data.data[0];
         this.uid = res.data.data[0].uid;
         this.radio = res.data.data[0].gender + "";
+        this.userInfo.phone = this.userInfo.phone.replace(
+          /(\d{3})\d{4}(\d{4})/,
+          "$1****$2"
+        );
       });
     },
     goBack() {
@@ -176,8 +173,21 @@ export default {
       let data = new FormData();
       data.append("uploadFile", file.file);
       this.axios.post(url, data).then((res) => {
-        // this.content = res.data
         console.log(res);
+        this.userInfo.avatar = res.data.urls[0];
+        let info = `avatar=${res.data.urls[0]}&uid=${this.uid}`;
+        this.axios
+          .put("http://127.0.0.1:3030/v2/pro/setavatar", info)
+          .then((res) => {
+            if (res.data.code == 200) {
+              Dialog.alert({
+                title: "提示",
+                message: "头像修改成功",
+              }).then(() => {
+                // location.reload();
+              });
+            }
+          });
       });
     },
     setUnameShow() {
@@ -323,6 +333,25 @@ export default {
           message: "请输入完整",
         }).then(() => {});
       }
+    },
+    setSex() {
+      let url = "http://127.0.0.1:3030/v2/pro/setsex";
+      let data = `gender=${this.radio}&uid=${this.uid}`;
+      this.axios.put(url, data).then((res) => {
+        if (res.data.code == 200) {
+          Dialog.alert({
+            title: "提示",
+            message: "性别修改成功",
+          }).then(() => {
+            location.reload();
+          });
+        } else {
+          Dialog.alert({
+            title: "提示",
+            message: "性别修改失败,请重试",
+          }).then(() => {});
+        }
+      });
     },
   },
   mounted() {
