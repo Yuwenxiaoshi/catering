@@ -96,6 +96,7 @@
         type="tel"
         label="原手机号"
         placeholder="请输入原手机号"
+        @blur="testPhone"
       />
       <van-field
         v-model="phone2"
@@ -103,7 +104,15 @@
         label="手机号"
         placeholder="请输入手机号"
       />
-      <van-button round block type="info" native-type="submit">提交</van-button>
+      <van-button
+        round
+        block
+        type="info"
+        native-type="submit"
+        :disabled="phonebtn"
+        @click="setPhone"
+        >提交</van-button
+      >
     </van-action-sheet>
     <van-action-sheet v-model="emailshow" title="修改邮箱">
       <van-field
@@ -111,6 +120,7 @@
         type="text"
         label="原邮箱"
         placeholder="请输入原邮箱"
+        @blur="testEmail"
       />
       <van-field
         v-model="email2"
@@ -118,7 +128,15 @@
         label="邮箱"
         placeholder="请输入邮箱"
       />
-      <van-button round block type="info" native-type="submit">提交</van-button>
+      <van-button
+        round
+        block
+        type="info"
+        native-type="submit"
+        :disabled="emailbtn"
+        @click="setEmail"
+        >提交</van-button
+      >
     </van-action-sheet>
   </div>
 </template>
@@ -149,6 +167,8 @@ export default {
       uid: null,
       lock2: true,
       pwdbtn: true,
+      phonebtn: true,
+      emailbtn: true,
     };
   },
   methods: {
@@ -173,7 +193,6 @@ export default {
       let data = new FormData();
       data.append("uploadFile", file.file);
       this.axios.post(url, data).then((res) => {
-        console.log(res);
         this.userInfo.avatar = res.data.urls[0];
         let info = `avatar=${res.data.urls[0]}&uid=${this.uid}`;
         this.axios
@@ -183,9 +202,7 @@ export default {
               Dialog.alert({
                 title: "提示",
                 message: "头像修改成功",
-              }).then(() => {
-                // location.reload();
-              });
+              }).then(() => {});
             }
           });
       });
@@ -223,7 +240,8 @@ export default {
               title: "提示",
               message: "用户名修改成功",
             }).then(() => {
-              location.reload();
+              this.userInfo.user_name = this.username;
+              this.usernameshow = false;
             });
           } else {
             Dialog.alert({
@@ -258,7 +276,7 @@ export default {
       if (!this.pwd1) {
         return;
       }
-      const url = `http://127.0.0.1:3030/v2/pro/textpwd?upwd=${this.pwd1}`;
+      const url = `http://127.0.0.1:3030/v2/pro/testpwd?upwd=${this.pwd1}`;
       this.axios.get(url).then((res) => {
         if (res.data.code == 200) {
           this.pwdbtn = false;
@@ -352,6 +370,93 @@ export default {
           }).then(() => {});
         }
       });
+    },
+    testPhone() {
+      let url = `http://127.0.0.1:3030/v2/pro/testphone?phone=${this.phone1}`;
+      if (this.phone1) {
+        this.axios.get(url).then((res) => {
+          if (res.data.code == 200) {
+            this.phonebtn = false;
+          } else {
+            Dialog.alert({
+              title: "提示",
+              message: "手机号码不匹配",
+            }).then(() => {
+              this.phonebtn = true;
+            });
+          }
+        });
+      }
+    },
+    setPhone() {
+      let url = "http://127.0.0.1:3030/v2/pro/setphone";
+      let data = `phone=${this.phone2}&uid=${this.uid}`;
+      if (/^(?:(?:\+|00)86)?1[3-9]\d{9}$/.test(this.phone2)) {
+        this.axios.put(url, data).then((res) => {
+          if (res.data.code == 200) {
+            Dialog.alert({
+              title: "提示",
+              message: "手机号码修改成功",
+            }).then(() => {
+              this.userInfo.phone = this.phone2;
+              this.phoneshow = false;
+            });
+          } else {
+            Dialog.alert({
+              title: "提示",
+              message: "手机号码修改失败,请重试",
+            }).then(() => {});
+          }
+        });
+      } else {
+        Dialog.alert({
+          title: "提示",
+          message: "手机号码格式错误,请修改",
+        }).then(() => {});
+      }
+    },
+    testEmail() {
+      let url = `http://127.0.0.1:3030/v2/pro/testemail?email=${this.email1}`;
+      if (this.email1) {
+        this.axios.get(url).then((res) => {
+          if (res.data.code == 200) {
+            this.emailbtn = false;
+          } else {
+            this.emailbtn = true;
+          }
+        });
+      }
+    },
+    setEmail() {
+      let url = "http://127.0.0.1:3030/v2/pro/setemail";
+      let data = `email=${this.email2}&uid=${this.uid}`;
+      if (
+        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
+          this.email2
+        )
+      ) {
+        this.axios.put(url, data).then((res) => {
+          if (res.data.code == 200) {
+            Dialog.alert({
+              title: "提示",
+              message: "邮箱修改成功",
+            }).then(() => {
+              this.userInfo.email = this.email2;
+              this.emailshow = false;
+            });
+          } else {
+            Dialog.alert({
+              title: "提示",
+              message: "邮箱修改失败,请重试",
+            }).then(() => {});
+          }
+        });
+      } else {
+        Dialog.alert({
+          title: "提示",
+          message: "邮箱格式错误,请修改",
+        }).then(() => {});
+      }
     },
   },
   mounted() {

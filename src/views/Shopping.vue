@@ -30,7 +30,7 @@
           :desc="i.subtitle"
           :title="i.title"
           :thumb="i.limg"
-          :thumb-link="`http://localhost:8080/productdetails/${i.product_id}`"
+          :thumb-link="`/productdetails/${i.product_id}`"
         >
           <template #footer>
             <van-stepper
@@ -38,8 +38,12 @@
               theme="round"
               button-size="22"
               disable-input
+              @change="setCount(i.count, i.product_id)"
             />
-            <van-checkbox v-model="i.is_checked" checked-color="#ffc107"
+            <van-checkbox
+              v-model="i.is_checked"
+              checked-color="#ffc107"
+              @click="setCheck(i.is_checked, i.product_id)"
               >选中</van-checkbox
             >
           </template>
@@ -74,6 +78,8 @@ export default {
       data: null,
       uname: "",
       prices: 0,
+      timeOut: null,
+      timeOut2: null,
     };
   },
   computed: {
@@ -90,7 +96,26 @@ export default {
       this.$router.push("/login");
     },
     onSubmit() {
-      alert("购买成功");
+      let url = `http://127.0.0.1:3030/v2/pro/buy?uname=${this.uname}`;
+      this.axios.delete(url).then((res) => {
+        if (res.data.code == 200) {
+          Dialog.alert({
+            title: "提示",
+            message: "购买成功",
+          }).then(() => {
+            this.data.map((item, i) => {
+              if (item.is_checked) {
+                this.data.splice(i, 1);
+              }
+            });
+          });
+        } else {
+          Dialog.alert({
+            title: "提示",
+            message: "购买失败,请重试",
+          }).then(() => {});
+        }
+      });
     },
     getShopping() {
       let url = `http://127.0.0.1:3030/v2/pro/shopping?uname=${this.uname}`;
@@ -116,6 +141,27 @@ export default {
         }
       });
     },
+    setCheck(check, id) {
+      let url = "http://127.0.0.1:3030/v2/pro/put";
+      let data = `check=${check ? 1 : 0}&uname=${this.uname}&lid=${id}`;
+      if (this.timeOut !== null) clearTimeout(this.timeOut);
+      this.timeOut = setTimeout(() => {
+        this.axios.put(url, data).then((res) => {
+          console.log(check, res.data);
+        });
+      }, 1000);
+    },
+    setCount(count, id) {
+      let url = "http://127.0.0.1:3030/v2/pro/putselect";
+      let data = `count=${count}&uname=${this.uname}&lid=${id}`;
+      if (this.timeOut2 !== null) clearTimeout(this.timeOut2);
+      this.timeOut2 = setTimeout(() => {
+        this.axios.put(url, data).then((res) => {
+          console.log(res.data);
+        });
+      }, 1000);
+    },
+    Buy() {},
   },
   mounted() {
     this.uname = sessionStorage.getItem("uname") || "";

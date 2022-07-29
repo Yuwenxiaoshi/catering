@@ -15,7 +15,7 @@
           <van-cell title="电话" :value="userInfo.phone" /> </van-cell-group
       ></van-col>
     </van-row>
-    <van-grid>
+    <van-grid v-if="uname">
       <van-grid-item icon="todo-list-o" text="点击签到" dot />
       <van-grid-item icon="diamond-o" text="会员权益" />
       <van-grid-item icon="cash-back-record" text="账户余额" />

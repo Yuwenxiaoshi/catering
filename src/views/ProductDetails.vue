@@ -89,9 +89,7 @@ export default {
           Dialog.alert({
             title: "提示",
             message: "购物车已有该物品",
-          }).then(() => {
-            location.reload();
-          });
+          }).then(() => {});
         }
       });
     },
@@ -113,7 +111,7 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 a {
   text-decoration: none;
   margin: 5px;
