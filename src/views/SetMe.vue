@@ -153,7 +153,7 @@ export default {
       username: "",
       sexshow: false,
       sex: "",
-      radio: "0",
+      radio: 0,
       phoneshow: false,
       phone1: null,
       phone2: null,
