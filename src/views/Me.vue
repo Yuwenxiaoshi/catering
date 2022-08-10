@@ -83,7 +83,7 @@ export default {
       });
     },
     goSh() {
-      this.$router.push("/receiving");
+      this.$router.push(`/receiving/${this.userInfo.uid}`);
     },
   },
   mounted() {

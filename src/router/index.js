@@ -86,20 +86,22 @@ const routes = [
     }
   },
   {
-    path: '/receiving',
+    path: '/receiving/:uid',
     name: 'Receiving',
     component: () => import('../views/Receiving.vue'),
     meta: {
       title: '我的 - 收货地址',
+      Headernoshow: true,
       Footernoshow: true,
     }
   },
   {
-    path: '/newreceiving',
+    path: '/newreceiving/:uid',
     name: 'NewReceiving',
     component: () => import('../views/NewReceiving.vue'),
     meta: {
       title: '我的 - 修改地址',
+      Headernoshow: true,
       Footernoshow: true,
     }
   },
